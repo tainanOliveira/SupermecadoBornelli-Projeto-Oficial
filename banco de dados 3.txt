@@ -1,0 +1,359 @@
+
+select * from tb_produto;
+select * from tb_cliente;
+select * from tb_fornecedor;
+select * from tb_funcionario;
+select * from tb_feedback;
+select * from tb_venda;
+
+
+-- Script SQL para inserção de dados fictícios para o Mercado Bornelli
+-- Versão expandida: 20/05/2025
+
+-- Limpar dados existentes mantendo a estrutura
+SET FOREIGN_KEY_CHECKS = 0;
+TRUNCATE TABLE tb_feedback;
+TRUNCATE TABLE tb_item_venda;
+TRUNCATE TABLE tb_venda;
+TRUNCATE TABLE tb_acesso_cliente;
+TRUNCATE TABLE tb_produto;
+TRUNCATE TABLE tb_fornecedor;
+TRUNCATE TABLE tb_cliente;
+TRUNCATE TABLE tb_funcionario;
+SET FOREIGN_KEY_CHECKS = 1;
+
+-- Inserir Fornecedores
+INSERT INTO tb_fornecedor (nm_empresa, cnpj, nm_representante, telefone, email, produtos_fornecidos, fl_excluido, dt_criacao, dt_atualizacao) VALUES
+('Distribuidora Sul Alimentos', '12.345.678/0001-01', 'Marcos Silva', '(48) 99876-5432', 'marcos@sulalimentos.com.br', 'Arroz, Feijão, Açúcar, Café', 0, NOW(), NOW()),
+('Laticínios Serra Catarinense', '23.456.789/0001-02', 'Ana Paula Oliveira', '(47) 98765-4321', 'anapaula@serralaticinios.com.br', 'Leite, Queijo, Iogurte, Manteiga', 0, NOW(), NOW()),
+('Frigorífico Nova Trento', '34.567.890/0001-03', 'José Carlos Pereira', '(49) 97654-3210', 'josecarlos@novatrento.com.br', 'Carnes, Embutidos, Congelados', 0, NOW(), NOW()),
+('Hortaliças Criciúma', '45.678.901/0001-04', 'Cláudia Santos', '(48) 96543-2109', 'claudia@hortalicriciuma.com.br', 'Legumes, Verduras, Frutas', 0, NOW(), NOW()),
+('Bebidas do Vale', '56.789.012/0001-05', 'Roberto Almeida', '(47) 95432-1098', 'roberto@bebidasdovale.com.br', 'Refrigerantes, Sucos, Cervejas, Águas', 0, NOW(), NOW()),
+-- Fornecedores adicionais
+('Empório Grãos Naturais', '67.890.123/0001-06', 'Beatriz Lima', '(48) 94321-0987', 'beatriz@emporiaograos.com.br', 'Cereais, Grãos, Farinhas, Produtos Naturais', 0, NOW(), NOW()),
+('Queijos Artesanais SC', '78.901.234/0001-07', 'Gustavo Mendes', '(47) 93210-9876', 'gustavo@queijosartesanais.com.br', 'Queijos Artesanais, Produtos Coloniais', 0, NOW(), NOW());
+
+-- Inserir clientes com datas espalhadas nos últimos 6 meses
+INSERT INTO tb_cliente (nm_cliente, cpf, email, telefone, fl_excluido, dt_criacao, dt_atualizacao) VALUES
+
+-- 📅 CLIENTES DE HOJE (3 clientes)
+('Maria da Silva', '123.456.789-01', 'maria.silva@email.com', '(48) 98765-4321', 0, 
+ DATE_SUB(NOW(), INTERVAL 0 DAY), NOW()),
+('João Oliveira', '234.567.890-12', 'joao.oliveira@email.com', '(48) 97654-3210', 0, 
+ DATE_SUB(NOW(), INTERVAL 0 DAY), NOW()),
+('Ana Santos', '345.678.901-23', 'ana.santos@email.com', '(48) 96543-2109', 0, 
+ DATE_SUB(NOW(), INTERVAL 0 DAY), NOW()),
+
+-- 📅 CLIENTES DA ÚLTIMA SEMANA (3 clientes)
+('Carlos Pereira', '456.789.012-34', 'carlos.pereira@email.com', '(48) 95432-1098', 0, 
+ DATE_SUB(NOW(), INTERVAL 3 DAY), NOW()),
+('Juliana Costa', '567.890.123-45', 'juliana.costa@email.com', '(48) 94321-0987', 0, 
+ DATE_SUB(NOW(), INTERVAL 5 DAY), NOW()),
+('Pedro Almeida', '678.901.234-56', 'pedro.almeida@email.com', '(48) 93210-9876', 0, 
+ DATE_SUB(NOW(), INTERVAL 6 DAY), NOW()),
+
+-- 📅 CLIENTES DO ÚLTIMO MÊS (4 clientes)
+('Luciana Ferreira', '789.012.345-67', 'luciana.ferreira@email.com', '(48) 92109-8765', 0, 
+ DATE_SUB(NOW(), INTERVAL 15 DAY), NOW()),
+('Rafael Mendes', '890.123.456-78', 'rafael.mendes@email.com', '(48) 91098-7654', 0, 
+ DATE_SUB(NOW(), INTERVAL 20 DAY), NOW()),
+('Camila Rodrigues', '901.234.567-89', 'camila.rodrigues@email.com', '(48) 90987-6543', 0, 
+ DATE_SUB(NOW(), INTERVAL 25 DAY), NOW()),
+('Bruno Santos', '012.345.678-90', 'bruno.santos@email.com', '(48) 98877-6655', 0, 
+ DATE_SUB(NOW(), INTERVAL 28 DAY), NOW()),
+
+-- 📅 CLIENTES DO ÚLTIMO ANO (5 clientes)
+('Fernanda Oliveira', '123.987.654-32', 'fernanda.oliveira@email.com', '(48) 97766-5544', 0, 
+ DATE_SUB(NOW(), INTERVAL 45 DAY), NOW()),
+('Marcelo Costa', '234.876.543-21', 'marcelo.costa@email.com', '(48) 96655-4433', 0, 
+ DATE_SUB(NOW(), INTERVAL 90 DAY), NOW()),
+('Patrícia Lima', '345.765.432-10', 'patricia.lima@email.com', '(48) 95544-3322', 0, 
+ DATE_SUB(NOW(), INTERVAL 180 DAY), NOW()),
+('Diego Sousa', '456.654.321-09', 'diego.sousa@email.com', '(48) 94433-2211', 0, 
+ DATE_SUB(NOW(), INTERVAL 270 DAY), NOW()),
+('Isabela Pereira', '567.543.210-98', 'isabela.pereira@email.com', '(48) 93322-1100', 0, 
+ DATE_SUB(NOW(), INTERVAL 350 DAY), NOW());
+
+-- 🔍 VERIFICAR A DISTRIBUIÇÃO
+SELECT 
+    'Hoje' as periodo,
+    COUNT(*) as quantidade_clientes
+FROM tb_cliente 
+WHERE dt_criacao >= DATE_SUB(NOW(), INTERVAL 1 DAY)
+
+UNION ALL
+
+SELECT 
+    'Última Semana' as periodo,
+    COUNT(*) as quantidade_clientes
+FROM tb_cliente 
+WHERE dt_criacao >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+
+UNION ALL
+
+SELECT 
+    'Último Mês' as periodo,
+    COUNT(*) as quantidade_clientes
+FROM tb_cliente 
+WHERE dt_criacao >= DATE_SUB(NOW(), INTERVAL 30 DAY)
+
+UNION ALL
+
+SELECT 
+    'Último Ano' as periodo,
+    COUNT(*) as quantidade_clientes
+FROM tb_cliente 
+WHERE dt_criacao >= DATE_SUB(NOW(), INTERVAL 365 DAY);
+
+-- 📊 VERIFICAR DATAS ESPECÍFICAS
+SELECT 
+    nm_cliente,
+    DATE_FORMAT(dt_criacao, '%d/%m/%Y %H:%i') as data_criacao,
+    DATEDIFF(NOW(), dt_criacao) as dias_atras
+FROM tb_cliente 
+ORDER BY dt_criacao DESC;
+
+-- Inserir Funcionários (usando Enum: GERENTE, ATENDENTE, CAIXA, ESTOQUISTA, ADMIN e Status: ATIVO, FERIAS, LICENCA)
+INSERT INTO tb_funcionario (nm_funcionario, cpf, email, telefone, cargo, status, dt_admissao, salario, fl_excluido, dt_criacao, dt_atualizacao) VALUES
+('Paulo Souza', '111.222.333-44', 'paulo.souza@mercadobornelli.com.br', '(48) 99999-8888', 'GERENTE', 'ATIVO', '2022-01-15', 5000.00, 0, NOW(), NOW()),
+('Amanda Oliveira', '222.333.444-55', 'amanda.oliveira@mercadobornelli.com.br', '(48) 99999-7777', 'CAIXA', 'ATIVO', '2022-03-10', 2200.00, 0, NOW(), NOW()),
+('Lucas Martins', '333.444.555-66', 'lucas.martins@mercadobornelli.com.br', '(48) 99999-6666', 'ESTOQUISTA', 'ATIVO', '2022-05-20', 1800.00, 0, NOW(), NOW()),
+('Fernanda Lima', '444.555.666-77', 'fernanda.lima@mercadobornelli.com.br', '(48) 99999-5555', 'ATENDENTE', 'FERIAS', '2022-08-05', 1900.00, 0, NOW(), NOW()),
+('Ricardo Gomes', '555.666.777-88', 'ricardo.gomes@mercadobornelli.com.br', '(48) 99999-4444', 'ADMIN', 'ATIVO', '2021-10-10', 6000.00, 0, NOW(), NOW()),
+-- Funcionários adicionais
+('Mariana Silva', '666.777.888-99', 'mariana.silva@mercadobornelli.com.br', '(48) 99999-3333', 'CAIXA', 'ATIVO', '2022-11-15', 2200.00, 0, NOW(), NOW()),
+('Felipe Cardoso', '777.888.999-00', 'felipe.cardoso@mercadobornelli.com.br', '(48) 99999-2222', 'ESTOQUISTA', 'ATIVO', '2023-01-20', 1850.00, 0, NOW(), NOW()),
+('Juliana Martins', '888.999.000-11', 'juliana.martins@mercadobornelli.com.br', '(48) 99999-1111', 'ATENDENTE', 'LICENCA', '2022-06-10', 1900.00, 0, NOW(), NOW()),
+('Eduardo Santos', '999.000.111-22', 'eduardo.santos@mercadobornelli.com.br', '(48) 99999-0000', 'GERENTE', 'ATIVO', '2021-08-15', 5100.00, 0, NOW(), NOW()),
+('Carla Ferreira', '000.111.222-33', 'carla.ferreira@mercadobornelli.com.br', '(48) 88888-9999', 'CAIXA', 'ATIVO', '2023-03-01', 2250.00, 0, NOW(), NOW());
+
+-- Inserir Produtos (Originais + Novos)
+INSERT INTO tb_produto (nm_produto, codigo_barras, categoria, qtd_estoque, vl_compra, vl_venda, id_fornecedor, fl_excluido, dt_criacao, dt_atualizacao) VALUES
+-- Produtos originais
+('Arroz Branco 5kg', '7891234567890', 'Alimentos', 100, 15.00, 22.90, 1, 0, NOW(), NOW()),
+('Feijão Preto 1kg', '7892345678901', 'Alimentos', 80, 5.00, 8.50, 1, 0, NOW(), NOW()),
+('Leite Integral 1L', '7893456789012', 'Laticínios', 120, 3.20, 4.99, 2, 0, NOW(), NOW()),
+('Queijo Mussarela 500g', '7894567890123', 'Laticínios', 50, 15.00, 24.90, 2, 0, NOW(), NOW()),
+('Filé de Frango 1kg', '7895678901234', 'Carnes', 60, 12.00, 19.90, 3, 0, NOW(), NOW()),
+('Linguiça Calabresa 500g', '7896789012345', 'Carnes', 40, 9.00, 15.50, 3, 0, NOW(), NOW()),
+('Tomate kg', '7897890123456', 'Hortifruti', 70, 3.00, 6.90, 4, 0, NOW(), NOW()),
+('Maçã kg', '7898901234567', 'Hortifruti', 90, 4.00, 8.90, 4, 0, NOW(), NOW()),
+('Refrigerante Cola 2L', '7899012345678', 'Bebidas', 100, 4.50, 7.99, 5, 0, NOW(), NOW()),
+('Cerveja Lata 350ml', '7890123456789', 'Bebidas', 150, 2.80, 4.49, 5, 0, NOW(), NOW()),
+-- Produtos adicionais (10 novos)
+('Açúcar Refinado 1kg', '7891234567891', 'Alimentos', 85, 3.50, 5.99, 1, 0, NOW(), NOW()),
+('Café Torrado 500g', '7892345678902', 'Alimentos', 70, 10.00, 14.90, 1, 0, NOW(), NOW()),
+('Iogurte Natural 170g', '7893456789013', 'Laticínios', 60, 2.00, 3.49, 2, 0, NOW(), NOW()),
+('Manteiga 200g', '7894567890124', 'Laticínios', 45, 7.00, 11.90, 2, 0, NOW(), NOW()),
+('Picanha Bovina kg', '7895678901235', 'Carnes', 25, 45.00, 69.90, 3, 0, NOW(), NOW()),
+('Salame Italiano 100g', '7896789012346', 'Carnes', 35, 6.50, 11.50, 3, 0, NOW(), NOW()),
+('Banana kg', '7897890123457', 'Hortifruti', 80, 2.50, 5.90, 4, 0, NOW(), NOW()),
+('Batata kg', '7898901234568', 'Hortifruti', 75, 2.00, 4.50, 4, 0, NOW(), NOW()),
+('Suco de Laranja 1L', '7899012345679', 'Bebidas', 60, 3.50, 6.49, 5, 0, NOW(), NOW()),
+('Água Mineral 500ml', '7890123456780', 'Bebidas', 200, 0.80, 1.99, 5, 0, NOW(), NOW());
+
+-- Criar 100 vendas com itens aleatórios (vamos gerar vendas nos últimos 3 meses)
+DELIMITER //
+CREATE PROCEDURE GerarVendas()
+BEGIN
+  DECLARE i INT DEFAULT 1;
+  DECLARE venda_id INT;
+  DECLARE cliente_id INT;
+  DECLARE data_venda DATETIME;
+  DECLARE forma_pagamento VARCHAR(20);
+  DECLARE qtd_itens INT;
+  DECLARE j INT;
+  DECLARE produto_id INT;
+  DECLARE quantidade INT;
+  DECLARE preco_unitario DECIMAL(10,2);
+  DECLARE subtotal DECIMAL(10,2);
+  DECLARE valor_total DECIMAL(10,2);
+  
+  WHILE i <= 100 DO -- Aumentado para 100 vendas
+    -- Seleciona um cliente aleatório (IDs de 1 a 15) - agora com mais clientes
+    SET cliente_id = FLOOR(1 + RAND() * 15);
+    
+    -- Gera uma data aleatória dos últimos 3 meses
+    SET data_venda = DATE_SUB(NOW(), INTERVAL FLOOR(RAND() * 90) DAY);
+    
+    -- Escolhe uma forma de pagamento aleatória
+    SET forma_pagamento = ELT(FLOOR(1 + RAND() * 3), 'PIX', 'CREDITO', 'DEBITO');
+    
+    -- Inicializa valor total
+    SET valor_total = 0;
+    
+    -- Insere a venda
+    INSERT INTO tb_venda (dt_venda, id_cliente, forma_pagamento, vl_total)
+    VALUES (data_venda, cliente_id, forma_pagamento, 0);
+    
+    -- Obtém o ID da venda inserida
+    SET venda_id = LAST_INSERT_ID();
+    
+    -- Determina quantidade aleatória de itens (entre 1 e 5)
+    SET qtd_itens = FLOOR(1 + RAND() * 5);
+    SET j = 1;
+    
+    WHILE j <= qtd_itens DO
+      -- Seleciona um produto aleatório (IDs de 1 a 20) - agora com mais produtos
+      SET produto_id = FLOOR(1 + RAND() * 20);
+      
+      -- Quantidade aleatória (entre 1 e 5)
+      SET quantidade = FLOOR(1 + RAND() * 5);
+      
+      -- Obtém o preço de venda do produto
+      SELECT vl_venda INTO preco_unitario FROM tb_produto WHERE id_produto = produto_id;
+      
+      -- Calcula o subtotal
+      SET subtotal = preco_unitario * quantidade;
+      
+      -- Adiciona ao valor total
+      SET valor_total = valor_total + subtotal;
+      
+      -- Insere o item de venda
+      INSERT INTO tb_item_venda (id_venda, id_produto, qtd_produto, vl_unitario, vl_subtotal)
+      VALUES (venda_id, produto_id, quantidade, preco_unitario, subtotal);
+      
+      SET j = j + 1;
+    END WHILE;
+    
+    -- Atualiza o valor total da venda
+    UPDATE tb_venda SET vl_total = valor_total WHERE id_venda = venda_id;
+    
+    -- Incrementa o contador de vendas
+    SET i = i + 1;
+  END WHILE;
+END //
+DELIMITER ;
+
+-- Executar o procedimento para gerar vendas
+CALL GerarVendas();
+
+-- Remover o procedimento após a execução
+DROP PROCEDURE GerarVendas;
+
+-- Criar feedbacks para aproximadamente 25% das vendas (25 feedbacks)
+DELIMITER //
+CREATE PROCEDURE GerarFeedbacks()
+BEGIN
+  DECLARE venda_id INT;
+  DECLARE cliente_id INT;
+  DECLARE tipo_feedback VARCHAR(20);
+  DECLARE nota INT;
+  DECLARE comentario TEXT;
+  DECLARE data_feedback DATETIME;
+  DECLARE done INT DEFAULT FALSE;
+  DECLARE cur CURSOR FOR 
+    SELECT id_venda, id_cliente FROM tb_venda 
+    ORDER BY RAND() 
+    LIMIT 25; -- 25% de 100 vendas = 25 feedbacks
+  
+  DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+  
+  OPEN cur;
+  
+  read_loop: LOOP
+    FETCH cur INTO venda_id, cliente_id;
+    
+    IF done THEN
+      LEAVE read_loop;
+    END IF;
+    
+    -- Escolhe um tipo de feedback aleatório
+    SET tipo_feedback = ELT(FLOOR(1 + RAND() * 3), 'ELOGIO', 'SUGESTAO', 'RECLAMACAO');
+    
+    -- Define a nota com base no tipo de feedback
+    CASE tipo_feedback
+      WHEN 'ELOGIO' THEN SET nota = FLOOR(4 + RAND() * 2); -- 4 ou 5
+      WHEN 'SUGESTAO' THEN SET nota = FLOOR(3 + RAND() * 2); -- 3 ou 4
+      WHEN 'RECLAMACAO' THEN SET nota = FLOOR(1 + RAND() * 3); -- 1, 2 ou 3
+    END CASE;
+    
+    -- Define o comentário com base no tipo de feedback
+    CASE tipo_feedback
+      WHEN 'ELOGIO' THEN SET comentario = ELT(FLOOR(1 + RAND() * 5), 
+                                          'Excelente atendimento e produtos de qualidade!', 
+                                          'Muito satisfeito com a compra, preços justos e produtos frescos.', 
+                                          'Ótima experiência de compra, ambiente limpo e organizado.',
+                                          'Os funcionários são muito atenciosos e educados!',
+                                          'Produtos sempre frescos e de excelente qualidade.');
+      WHEN 'SUGESTAO' THEN SET comentario = ELT(FLOOR(1 + RAND() * 5), 
+                                            'Poderiam ampliar a variedade de produtos orgânicos.', 
+                                            'Seria interessante ter mais opções de produtos sem glúten.', 
+                                            'Sugiro um sistema de fidelidade para clientes frequentes.',
+                                            'Poderiam ter um horário estendido nos finais de semana.',
+                                            'Seria bom ter um setor dedicado a produtos regionais.');
+      WHEN 'RECLAMACAO' THEN SET comentario = ELT(FLOOR(1 + RAND() * 5), 
+                                              'Alguns produtos estavam próximos da data de validade.', 
+                                              'Demorei muito para ser atendido no caixa.', 
+                                              'Preços diferentes entre as gôndolas e o caixa.',
+                                              'Faltavam funcionários no horário de pico.',
+                                              'O estacionamento estava lotado e mal organizado.');
+    END CASE;
+    
+    -- Define a data do feedback como após a data da venda
+    SELECT DATE_ADD(dt_venda, INTERVAL FLOOR(1 + RAND() * 3) DAY) INTO data_feedback 
+    FROM tb_venda WHERE id_venda = venda_id;
+    
+    -- Insere o feedback
+    INSERT INTO tb_feedback (id_cliente, id_venda, tipo, nota, comentario, dt_feedback)
+    VALUES (cliente_id, venda_id, tipo_feedback, nota, comentario, data_feedback);
+    
+  END LOOP;
+  
+  CLOSE cur;
+END //
+DELIMITER ;
+
+-- Executar o procedimento para gerar feedbacks
+CALL GerarFeedbacks();
+
+-- Remover o procedimento após a execução
+DROP PROCEDURE GerarFeedbacks;
+
+-- Criar registros de acesso para os clientes
+DELIMITER //
+CREATE PROCEDURE GerarAcessosCliente()
+BEGIN
+  DECLARE i INT DEFAULT 1;
+  DECLARE cliente_id INT;
+  DECLARE data_acesso DATETIME;
+  DECLARE acao TEXT;
+  DECLARE ip TEXT;
+  
+  WHILE i <= 60 DO -- Aumentado para 60 registros de acesso
+    -- Seleciona um cliente aleatório (IDs de 1 a 15) - agora com mais clientes
+    SET cliente_id = FLOOR(1 + RAND() * 15);
+    
+    -- Gera uma data aleatória dos últimos 30 dias
+    SET data_acesso = DATE_SUB(NOW(), INTERVAL FLOOR(RAND() * 30) DAY);
+    
+    -- Escolhe uma ação aleatória
+    SET acao = ELT(FLOOR(1 + RAND() * 7), 
+                   'Login no sistema', 
+                   'Visualização de produtos', 
+                   'Atualização de dados cadastrais', 
+                   'Realização de compra', 
+                   'Envio de feedback',
+                   'Busca por produtos',
+                   'Consulta de histórico de compras');
+    
+    -- Gera um IP aleatório
+    SET ip = CONCAT('192.168.', FLOOR(RAND() * 255), '.', FLOOR(RAND() * 255));
+    
+    -- Insere o acesso
+    INSERT INTO tb_acesso_cliente (id_cliente, dt_acesso, acao_realizada, ip_dispositivo)
+    VALUES (cliente_id, data_acesso, acao, ip);
+    
+    SET i = i + 1;
+  END WHILE;
+END //
+DELIMITER ;
+
+-- Executar o procedimento para gerar acessos
+CALL GerarAcessosCliente();
+
+-- Remover o procedimento após a execução
+DROP PROCEDURE GerarAcessosCliente;
+
+-- Mensagem final
+SELECT 'Dados fictícios expandidos criados com sucesso! (100 vendas, 25 feedbacks, etc.)' AS Mensagem;
